@@ -1,0 +1,39 @@
+{
+    "name": "redux-helpers",
+    "version": "1.0.0",
+    "description": "",
+    "keywords": [
+        "typescript",
+        "redux"
+    ],
+    "main": "index.js",
+    "types": "index.d.ts",
+    "scripts": {
+        "test": "webpack && karma start"
+    },
+    "author": "Mindbox",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mindbox-moscow/redux-helpers"
+    },
+    "devDependencies": {
+        "@types/jasmine": "^2.5.38",
+        "@types/redux-actions": "^1.2.3",
+        "jasmine-core": "^2.5.2",
+        "karma": "^1.3.0",
+        "karma-coverage": "^1.1.1",
+        "karma-jasmine": "^1.0.2",
+        "karma-mocha-reporter": "^2.2.0",
+        "karma-phantomjs-launcher": "^1.0.2",
+        "karma-typescript": "^2.1.7",
+        "source-map-loader": "^0.1.5",
+        "ts-loader": "^1.2.0",
+        "typescript": "2.1.6",
+        "webpack": "^1.13.3"
+    },
+    "dependencies": {
+        "redux": "^3.6.0",
+        "redux-actions": "^2.0.0"
+    }
+}
