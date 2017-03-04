@@ -2,9 +2,9 @@ language: node_js
 node_js:
     - "node"
 
-addons:
-  code_climate:
-    repo_token: $CODE_CLIMATE_TOKEN
+env:
+  - CODECLIMATE_API_HOST=$CODECLIMATE_API_HOST
+  - CODECLIMATE_REPO_TOKEN=$CODECLIMATE_REPO_TOKEN
 
 install:
     - npm install
