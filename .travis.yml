@@ -16,7 +16,7 @@ cache:
 
 script:
     - npm test
-    - tsc ts/asp-net-core-url-compiler.ts --outDir ./js/
+    - tsc ts/helpers.ts --outDir ./js/ --target es5
 
 after_success:
   - find ./coverage -name "lcovonly" -exec cp {} ./lcov.info \;
