@@ -1,7 +1,7 @@
 {
-    "name": "redux-helpers",
-    "version": "0.1.0",
-    "description": "",
+    "name": "@mindbox/redux-helpers",
+    "version": "1.0.0",
+    "description": "[![Build Status](https://travis-ci.org/mindbox-moscow/redux-helpers.svg?branch=master)](https://travis-ci.org/mindbox-moscow/redux-helpers)\r [![codebeat badge](https://codebeat.co/badges/d8b0e56d-8c51-442f-b666-b186d9e51bf2)](https://codebeat.co/projects/github-com-mindbox-moscow-redux-helpers)\r [![Coverage Status](https://coveralls.io/repos/github/mindbox-moscow/redux-helpers/badge.svg)](https://coveralls.io/github/mindbox-moscow/redux-helpers)",
     "keywords": [
         "typescript",
         "redux"
@@ -15,7 +15,7 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/mindbox-moscow/redux-helpers"
+        "url": "git+https://github.com/mindbox-moscow/redux-helpers.git"
     },
     "devDependencies": {
         "@types/jasmine": "^2.5.38",
@@ -37,5 +37,12 @@
     "dependencies": {
         "redux": "^3.6.0",
         "redux-actions": "^2.0.0"
+    },
+    "bugs": {
+        "url": "https://github.com/mindbox-moscow/redux-helpers/issues"
+    },
+    "homepage": "https://github.com/mindbox-moscow/redux-helpers#readme",
+    "directories": {
+        "test": "tests"
     }
 }

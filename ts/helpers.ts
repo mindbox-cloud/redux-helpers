@@ -1,7 +1,6 @@
 ﻿import * as Redux from "redux";
 import { createAction as reduxCreateAction } from "redux-actions";
 
-
 interface BaseAction
 {
 	type: string;
