@@ -1,9 +1,11 @@
 coverage/
 tests/
+tmp/
 
+gruntfile.js
 karma.conf.js
 tsconfig.json
 webpack.config.js
 .eslintrc
 .eslintignore
-.codeclimate.yml
+.travis.yml
