@@ -3,12 +3,11 @@ node_js:
     - "node"
 
 env:
-  - CODECLIMATE_API_HOST=$CODECLIMATE_API_HOST
-  - CODECLIMATE_REPO_TOKEN=$CODECLIMATE_REPO_TOKEN
+  - COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN
 
 install:
     - npm install
-    - npm install karma-cli webpack typescript codeclimate-test-reporter --global
+    - npm install karma-cli webpack typescript codeclimate-test-reporter grunt --global
 
 cache:
     directories:
@@ -20,4 +19,4 @@ script:
 
 after_success:
   - find ./coverage -name "lcovonly" -exec cp {} ./lcov.info \;
-  - codeclimate-test-reporter < lcov.info
+  - grunt coveralls
