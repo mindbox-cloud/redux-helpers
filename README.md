@@ -3,6 +3,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/mindbox-moscow/redux-helpers/badge.svg?branch=master)](https://coveralls.io/github/mindbox-moscow/redux-helpers?branch=master)
 
 [![npm (scoped)](https://img.shields.io/npm/v/@mindbox/redux-helpers.svg)](https://www.npmjs.com/package/@mindbox/redux-helpers)
+
 # Redux helpers
 Typed factories for your reducers and actions.
 
