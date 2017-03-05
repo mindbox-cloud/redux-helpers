@@ -18,5 +18,5 @@ script:
     - tsc ts/helpers.ts --outDir ./js/ --target es5
 
 after_success:
-  - find ./coverage -name "lcovonly" -exec cp {} ./lcov.info \;
+  - find ./coverage -name "lcovonly" -exec cp {} ./lcovonly \;
   - grunt coveralls
