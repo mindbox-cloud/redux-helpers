@@ -99,7 +99,7 @@ describe("Redux helpers tests",
 							.toThrowError("Reducer with type \"ACTION\" had already been registered.");
 					});
 
-				it("InitialState is used in case of null",
+				it("Returns null in case of null current state",
 					() =>
 					{
 						interface State
@@ -114,7 +114,18 @@ describe("Redux helpers tests",
 						const actualState = jointReducer(null, { type: "ACTION" });
 
 
-						expect(actualState).toEqual(initialState);
+						expect(actualState).toEqual(null);
+					});
+
+				it("JointReducer with initialState = true doesn't change state on unexpected actions",
+					() =>
+					{
+						const jointReducer = Helpers.joinReducers<boolean>(true, []);
+
+						const currentState = false;
+						const nextState = jointReducer(false, { type: "ACTION" });
+
+						expect(nextState).toEqual(currentState);
 					});
 			});
 	});
