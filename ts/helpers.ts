@@ -123,18 +123,18 @@ const joinReducers = <TState>(
 		}
 
 		const reducer = (
-				currentState: TState,
+				currentState: TState = initialState,
 				action: Action<any>): TState =>
 			{
 				const actionReducer = actionReducerMap[action.type];
 
-				let actualState = currentState || initialState;
+				let nextState = currentState;
 				if (actionReducer != null)
-					actualState = actionReducer(actualState, action);
+					nextState = actionReducer(nextState, action);
 				if (defaultReducer != null)
-					actualState = defaultReducer(actualState, action);
+					nextState = defaultReducer(nextState, action);
 
-				return actualState;
+				return nextState;
 			};
 
 		return reducer;
