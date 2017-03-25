@@ -6,6 +6,18 @@ describe("Redux helpers tests",
 		describe("GuardedFactory tests",
 		() =>
 		{
+			it("'type'-getter returns type of action",
+				() =>
+				{
+					const anActionFactory = Helpers.createFactory<string>("ACTION");
+
+					const anAction = anActionFactory.createAction("abacaba");
+
+
+					expect(anAction.type).toEqual(anActionFactory.type);
+					expect(anActionFactory.type).toEqual("ACTION");
+				});
+
 			it("reducer processes actions from same factory",
 				() =>
 				{
@@ -25,6 +37,43 @@ describe("Redux helpers tests",
 
 					expect(expectedState.a).toEqual("abacaba");
 				});
+
+			it("reducers returns not modified state for 'misstyped' action",
+				() =>
+				{
+					const alphaActionFactory = Helpers.createFactory<string>("ALPHA");
+					const betaActionFactory = Helpers.createFactory<string>("BETA");
+
+					const alphaReducer = alphaActionFactory.createReducer<string>(
+						(state, action) => action.payload);
+
+					const betaAction = betaActionFactory.createAction("B");
+
+
+					const actualState = alphaReducer.reducer("abacaba", betaAction);
+
+
+					expect(actualState).toEqual("abacaba");
+				})
+
+			it("reducers returns initial modified state for 'misstyped' action",
+				() =>
+				{
+					const alphaActionFactory = Helpers.createFactory<string>("ALPHA");
+					const betaActionFactory = Helpers.createFactory<string>("BETA");
+
+					const alphaReducer = alphaActionFactory.createReducer<string>(
+						(state, action) => action.payload,
+						"initialState");
+
+					const betaAction = betaActionFactory.createAction("B");
+
+
+					const actualState = alphaReducer.reducer(undefined, betaAction);
+
+
+					expect(actualState).toEqual("initialState");
+				})
 		});
 
 		describe("joinReducers tests",
