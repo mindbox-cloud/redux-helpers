@@ -83,7 +83,7 @@ class GuardedReducer<TPayload, TState> implements GuardedReducerBase<TState>
 		type: GuardedActionType<TPayload>,
 		reducer: (state: TState, action: Action<TPayload>) => TState)
 	{
-		this._type = (type || "").toString();
+		this._type = (type).toString();
 		this._reducer = reducer;
 	}
 
