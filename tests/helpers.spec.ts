@@ -56,7 +56,7 @@ describe("Redux helpers tests",
 					expect(actualState).toEqual("abacaba");
 				})
 
-			it("reducers returns initial modified state for 'misstyped' action",
+			it("reducer returns initial modified state for 'mistyped' action",
 				() =>
 				{
 					const alphaActionFactory = Helpers.createFactory<string>("ALPHA");
