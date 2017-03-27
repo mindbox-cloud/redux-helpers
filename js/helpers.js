@@ -1,8 +1,9 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var redux_actions_1 = require("redux-actions");
 ;
 /**
- * Фабрика action creator'ов и reducer'ов, хранящая в себе типы текущей ветки store и Payload action'а.
+ * Action creator's and reducer's factory. It contains current store brunch's type and action payload's type.
  * @template TState store's current brunch type.
  * @template TPayload action's payload type.
  */
@@ -19,14 +20,14 @@ var GuardedFactory = (function () {
         configurable: true
     });
     /**
-     * Создает action creator.
-     * @param payload payload для action'а.
+     * Creates an action creator.
+     * @param payload payload for an action.
      */
     GuardedFactory.prototype.createAction = function (payload) {
         return this._actionCreator(payload);
     };
     /**
-     * Создает reducer, привязанный к конкретному GuardedActionType.
+     * Creates a reducer, bounded to concrete GuardedActionType.
      * @param reducer reducer.
      */
     GuardedFactory.prototype.createReducer = function (reducer, initialState) {
@@ -43,7 +44,7 @@ var GuardedFactory = (function () {
 exports.GuardedFactory = GuardedFactory;
 var GuardedReducer = (function () {
     function GuardedReducer(type, reducer) {
-        this._type = (type || "").toString();
+        this._type = (type).toString();
         this._reducer = reducer;
     }
     Object.defineProperty(GuardedReducer.prototype, "reducer", {
@@ -63,46 +64,47 @@ var GuardedReducer = (function () {
     return GuardedReducer;
 }());
 /**
-* Склеивает набор reducer'ов для работы с одной веткой state'а
-* (в отличие от combine, где каждый reducer работает со своим поддеревом).
+* Join a set of reducers that work with same state's branch
+* (unlike combine where each reducer work with different branches).
 *
-* Можно добиться такой неприятной ситуации, когда defaultReducer среагирует на action, на который уже среагировал
-* один из actionReducer'ов. Запретить такую регистрацию не представляется возможным.
-* @param initialState state по-умолчанию.
-* @param actionReducers массив reducer'ов с GuardedActionType'ом.
-* @param defaultReducer reducer по-умолчанию.
+* You can register a defaultReducer that will be triggered even if an action
+* was already processed. Please avoid such registrations.
+* @param initialState initial state.
+* @param actionReducers a set of reducers with GuardedActionType.
+* @param defaultReducer default reducer.
 */
 var joinReducers = function (initialState, actionReducers, defaultReducer) {
     var actionReducerMap = {};
     for (var _i = 0, actionReducers_1 = actionReducers; _i < actionReducers_1.length; _i++) {
         var actionReducer = actionReducers_1[_i];
         if (actionReducerMap[actionReducer.type] != null)
-            throw new Error("reducer \u0441 \u0442\u0438\u043F\u043E\u043C \"" + actionReducer.type + "\" \u0443\u0436\u0435 \u0437\u0430\u0440\u0435\u0433\u0438\u0441\u0442\u0438\u0440\u043E\u0432\u0430\u043D");
+            throw new Error("Reducer with type \"" + actionReducer.type + "\" had already been registered.");
         actionReducerMap[actionReducer.type] = actionReducer.reducer;
     }
     var reducer = function (currentState, action) {
+        if (currentState === void 0) { currentState = initialState; }
         var actionReducer = actionReducerMap[action.type];
-        var actualState = currentState || initialState;
+        var nextState = currentState;
         if (actionReducer != null)
-            actualState = actionReducer(actualState, action);
+            nextState = actionReducer(nextState, action);
         if (defaultReducer != null)
-            actualState = defaultReducer(actualState, action);
-        return actualState;
+            nextState = defaultReducer(nextState, action);
+        return nextState;
     };
     return reducer;
 };
 exports.joinReducers = joinReducers;
 /**
- * Проверяет, имеет ли указанный FSA (Flux Standard Action) требуемый тип.
- * @param action action, который нужно проверить.
- * @param type требуемый тип action'а.
- * @template TPayload тип полезной нагрузки action'а.
+ * Check that FSA (Flux Standard Action) has required type.
+ * @param action action to check.
+ * @param type required action type.
+ * @template TPayload action's payload type.
  */
 var is = function (action, type) { return action.type === type; };
 /**
- * Создает фабрику action-creator'ов и reducer-creator'ов.
- * @param type тип action'а.
- * @template TPayload тип полезной нагрузки action'а.
+ * Create action creator's and action reducer's factory.
+ * @param type action's type.
+ * @template TPayload action's payload type.
  */
 var createFactory = function (type) { return new GuardedFactory(type); };
 exports.createFactory = createFactory;
