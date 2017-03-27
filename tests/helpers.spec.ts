@@ -166,6 +166,19 @@ describe("Redux helpers tests",
 						expect(actualState).toEqual(null);
 					});
 
+				it("Returns initial state in case of undefined current state",
+					() =>
+					{
+						const initialState = "abacaba";
+						const jointReducer = Helpers.joinReducers<string>(initialState, []);
+
+
+						const actualState = jointReducer(undefined, { type: "ACTION"});
+
+
+						expect(actualState).toEqual(initialState);
+					});
+
 				it("JointReducer with initialState = true doesn't change state on unexpected actions",
 					() =>
 					{
