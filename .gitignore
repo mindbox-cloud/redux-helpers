@@ -252,8 +252,7 @@ paket-files/
 *.sln.iml
 
 # Project specific
-js/index.js
-js/tests.js
+js/
 .vscode
 typings
 *.js.map

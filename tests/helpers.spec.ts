@@ -14,8 +14,19 @@ describe("Redux helpers tests",
 					const anAction = anActionFactory.createAction("abacaba");
 
 
+					expect(anAction.payload).toEqual("abacaba");
 					expect(anAction.type).toEqual(anActionFactory.type);
 					expect(anActionFactory.type).toEqual("ACTION");
+				});
+
+			it("createAction can use empty payload",
+				() =>
+				{
+					const anActionFactory = Helpers.createFactory<string>("ACTION");
+
+					const anAction = anActionFactory.createAction();
+
+					expect(anAction.payload).toBeNull();
 				});
 
 			it("reducer processes actions from same factory",

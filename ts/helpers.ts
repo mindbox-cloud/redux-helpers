@@ -43,11 +43,11 @@ export class GuardedFactory<TPayload>
 
 	/**
 	 * Creates an action creator.
-	 * @param payload payload for an action.
+	 * @param payload payload for an action. If not passed null will be used as payload.
 	 */
-	public createAction(payload: TPayload): Action<TPayload>
+	public createAction(payload?: TPayload): Action<TPayload>
 	{
-		return this._actionCreator(payload);
+		return this._actionCreator(payload || null as TPayload);
 	}
 
 	/**

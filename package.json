@@ -1,6 +1,6 @@
 {
     "name": "@mindbox/redux-helpers",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "Typed factories for your redux reducers and actions.",
     "keywords": [
         "typescript",
