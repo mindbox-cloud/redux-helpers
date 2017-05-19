@@ -64,6 +64,21 @@ describe("Redux helpers tests",
 					expect(expectedState).toEqual("payload");
 				});
 
+			it("primitive reducer set array of primtive types state",
+				() =>
+				{
+					const anActionFactory = Helpers.createFactory<string[]>("ACTION");
+
+					const anAction = anActionFactory.createAction(["payload1", "payload2"]);
+					const aReducer = anActionFactory.createPrimitiveReducer();
+
+
+					const expectedState = aReducer.reducer(["initialState"], anAction);
+
+
+					expect(expectedState).toEqual(["payload1", "payload2"]);
+				});
+
 			it("primitive reducer sets default state if state is empty",
 				() =>
 				{
