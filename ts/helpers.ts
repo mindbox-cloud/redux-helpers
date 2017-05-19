@@ -1,6 +1,8 @@
 ﻿import * as Redux from "redux";
 import { createAction as reduxCreateAction } from "redux-actions";
 
+type Primitive = string | number | boolean;
+
 interface BaseAction
 {
 	type: string;
@@ -69,12 +71,12 @@ export class GuardedFactory<TPayload>
 	}
 
 	/**
-	 * Creates a reducer for primitve type, bounded to concrete GuardedActionType.
+	 * Creates a reducer for primitve types or array of primitve types, bounded to concrete GuardedActionType.
 	 * This method is helpful when you use it with combineReducers.
 	 * It helps to remove boilerplate code like "MY_ACTION.createReducer<boolean>((state, action) => action.payload)".
 	 * @param initialState initialState.
 	 */
-	public createPrimitiveReducer<TState extends TPayload & (string | number | boolean)>(initialState?: TState)
+	public createPrimitiveReducer<TState extends TPayload & (Primitive | Array<Primitive>)>(initialState?: TState)
 	{
 		return this.createReducer<TPayload>((state, action) => action.payload, initialState);
 	}
