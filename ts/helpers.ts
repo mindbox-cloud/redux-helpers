@@ -71,7 +71,8 @@ export class GuardedFactory<TPayload>
 	}
 
 	/**
-	 * Creates a reducer for primitve types or array of primitve types, bounded to concrete GuardedActionType.
+	 * Creates a reducer that replaces current state with payload.
+	 * Can be used only for primitive types or array of primitive types.
 	 * This method is helpful when you use it with combineReducers.
 	 * It helps to remove boilerplate code like "MY_ACTION.createReducer<boolean>((state, action) => action.payload)".
 	 * @param initialState initialState.
