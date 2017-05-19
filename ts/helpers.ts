@@ -53,6 +53,7 @@ export class GuardedFactory<TPayload>
 	/**
 	 * Creates a reducer, bounded to concrete GuardedActionType.
 	 * @param reducer reducer.
+	 * @param initialState initialState.
 	 */
 	public createReducer<TState>(reducer: (state: TState, action: Action<TPayload>) => TState, initialState?: TState)
 	{
@@ -65,6 +66,17 @@ export class GuardedFactory<TPayload>
 		};
 
 		return new GuardedReducer<TPayload, TState>(this._type, actionReducer);
+	}
+
+	/**
+	 * Creates a reducer for primitve type, bounded to concrete GuardedActionType.
+	 * This method is helpful when you use it with combineReducers.
+	 * It helps to remove boilerplate code like "MY_ACTION.createReducer<boolean>((state, action) => action.payload)".
+	 * @param initialState initialState.
+	 */
+	public createPrimitiveReducer<TState extends TPayload & (string | number | boolean)>(initialState?: TState)
+	{
+		return this.createReducer<TPayload>((state, action) => action.payload, initialState);
 	}
 }
 

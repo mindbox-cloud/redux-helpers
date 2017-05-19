@@ -49,6 +49,37 @@ describe("Redux helpers tests",
 					expect(expectedState.a).toEqual("abacaba");
 				});
 
+			it("primitive reducer set primtive type state",
+				() =>
+				{
+					const anActionFactory = Helpers.createFactory<string>("ACTION");
+
+					const anAction = anActionFactory.createAction("payload");
+					const aReducer = anActionFactory.createPrimitiveReducer();
+
+
+					const expectedState = aReducer.reducer("initialState", anAction);
+
+
+					expect(expectedState).toEqual("payload");
+				});
+
+			it("primitive reducer sets default state if state is empty",
+				() =>
+				{
+					const anAnotherActionFactory = Helpers.createFactory<string>("ANOTHER_ACTION");
+					const anActionFactory = Helpers.createFactory<string>("ACTION");
+
+					const anActionForAnotherReducer = anAnotherActionFactory.createAction("payload");
+					const aReducer = anActionFactory.createPrimitiveReducer("defaultState");
+
+
+					const expectedState = aReducer.reducer(null, anActionForAnotherReducer);
+
+
+					expect(expectedState).toEqual("defaultState");
+				});
+
 			it("reducers returns not modified state for 'misstyped' action",
 				() =>
 				{
