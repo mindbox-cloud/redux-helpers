@@ -28,6 +28,16 @@ describe("Redux helpers tests",
 
 					expect(anAction.payload).toBeNull();
 				});
+				
+			it("createAction with payload === false doesn't change action's payload",
+				() =>
+				{
+					const anActionFactory = Helpers.createFactory<boolean>("ACTION");
+
+					const anAction = anActionFactory.createAction(false);
+
+					expect(anAction.payload).toEqual(false);
+				});
 
 			it("reducer processes actions from same factory",
 				() =>
@@ -79,7 +89,7 @@ describe("Redux helpers tests",
 					expect(expectedState).toEqual(["payload1", "payload2"]);
 				});
 
-			it("primitive reducer sets default state if state is empty",
+			it("primitive reducer sets default state if state is undefined",
 				() =>
 				{
 					const anAnotherActionFactory = Helpers.createFactory<string>("ANOTHER_ACTION");
@@ -89,7 +99,7 @@ describe("Redux helpers tests",
 					const aReducer = anActionFactory.createPrimitiveReducer("defaultState");
 
 
-					const expectedState = aReducer.reducer(null, anActionForAnotherReducer);
+					const expectedState = aReducer.reducer(undefined, anActionForAnotherReducer);
 
 
 					expect(expectedState).toEqual("defaultState");
@@ -111,7 +121,7 @@ describe("Redux helpers tests",
 
 
 					expect(actualState).toEqual("abacaba");
-				})
+				});
 
 			it("reducer returns initial modified state for 'mistyped' action",
 				() =>
@@ -130,7 +140,22 @@ describe("Redux helpers tests",
 
 
 					expect(actualState).toEqual("initialState");
-				})
+				});
+				
+			it("GuardedReducer's reducer with initialState === true doesn't change state on unexpected actions", 
+				() => 
+				{
+					const factory = Helpers.createFactory<boolean>("FACTORY");
+					
+					const reducer = factory.createReducer<boolean>(
+						(state, action) => action.payload,
+						true
+					).reducer;
+					
+					const actualState = reducer(false, { type: "@@INIT" });
+					
+					expect(actualState).toEqual(false);
+				});
 		});
 
 		describe("joinReducers tests",
@@ -236,7 +261,7 @@ describe("Redux helpers tests",
 						expect(actualState).toEqual(initialState);
 					});
 
-				it("JointReducer with initialState = true doesn't change state on unexpected actions",
+				it("JointReducer with initialState === true doesn't change state on unexpected actions",
 					() =>
 					{
 						const jointReducer = Helpers.joinReducers<boolean>(true, []);

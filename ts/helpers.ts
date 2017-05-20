@@ -47,9 +47,9 @@ export class GuardedFactory<TPayload>
 	 * Creates an action creator.
 	 * @param payload payload for an action. If not passed null will be used as payload.
 	 */
-	public createAction(payload?: TPayload): Action<TPayload>
+	public createAction(payload: TPayload = null): Action<TPayload>
 	{
-		return this._actionCreator(payload || null as TPayload);
+		return this._actionCreator(payload);
 	}
 
 	/**
@@ -59,12 +59,12 @@ export class GuardedFactory<TPayload>
 	 */
 	public createReducer<TState>(reducer: (state: TState, action: Action<TPayload>) => TState, initialState?: TState)
 	{
-		const actionReducer = (state: TState, action: Action<TPayload>) =>
+		const actionReducer = (state: TState = initialState, action: Action<TPayload>) =>
 		{
 			if (is(action, this._type))
 				return reducer(state, action);
 
-			return state || initialState;
+			return state;
 		};
 
 		return new GuardedReducer<TPayload, TState>(this._type, actionReducer);
