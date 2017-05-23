@@ -77,7 +77,7 @@ export class GuardedFactory<TPayload>
 	 * It helps to remove boilerplate code like "MY_ACTION.createReducer<boolean>((state, action) => action.payload)".
 	 * @param initialState initialState.
 	 */
-	public createPrimitiveReducer<TState extends TPayload & (Primitive | Array<Primitive>)>(initialState?: TState)
+	public createPrimitiveReducer<TState extends TPayload & (Primitive | Array<Primitive>)>(initialState: TState)
 	{
 		return this.createReducer<TPayload>((state, action) => action.payload, initialState);
 	}

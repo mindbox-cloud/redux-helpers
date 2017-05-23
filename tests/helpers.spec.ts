@@ -65,7 +65,7 @@ describe("Redux helpers tests",
 					const anActionFactory = Helpers.createFactory<string>("ACTION");
 
 					const anAction = anActionFactory.createAction("payload");
-					const aReducer = anActionFactory.createPrimitiveReducer();
+					const aReducer = anActionFactory.createPrimitiveReducer("defaultState");
 
 
 					const expectedState = aReducer.reducer("initialState", anAction);
@@ -80,7 +80,7 @@ describe("Redux helpers tests",
 					const anActionFactory = Helpers.createFactory<string[]>("ACTION");
 
 					const anAction = anActionFactory.createAction(["payload1", "payload2"]);
-					const aReducer = anActionFactory.createPrimitiveReducer();
+					const aReducer = anActionFactory.createPrimitiveReducer(["defaultState"]);
 
 
 					const expectedState = aReducer.reducer(["initialState"], anAction);
