@@ -14,13 +14,17 @@ interface Action<TPayload> extends BaseAction
 	error?: boolean;
 }
 
-/**
- * Used for strict type check.
- */
-interface GuardedActionType<T>
-{
-	type?: T;
-};
+class GuardedActionType<TPayload> {
+	private _type: string;
+	
+	constructor(type: string) {
+		this._type = type;
+	}
+
+	public toString() {
+		return this._type;
+	}
+}
 
 /**
  * Action creator's and reducer's factory. It contains current store brunch's type and action payload's type.
@@ -59,7 +63,7 @@ export class GuardedFactory<TPayload>
 	 */
 	public createReducer<TState>(reducer: (state: TState, action: Action<TPayload>) => TState, initialState?: TState)
 	{
-		const actionReducer = (state: TState = initialState, action: Action<TPayload>) =>
+		const actionReducer = <TPayload>(state: TState = initialState, action: Action<TPayload>) =>
 		{
 			if (is(action, this._type))
 				return reducer(state, action);
@@ -91,12 +95,12 @@ interface GuardedReducerBase<TState>
 
 class GuardedReducer<TPayload, TState> implements GuardedReducerBase<TState>
 {
-	private _reducer: (state: TState, action: Action<TPayload>) => TState;
+	private _reducer: <TPayload>(state: TState, action: Action<TPayload>) => TState;
 	private _type: string;
 
 	constructor(
 		type: GuardedActionType<TPayload>,
-		reducer: (state: TState, action: Action<TPayload>) => TState)
+		reducer: <TPayload>(state: TState, action: Action<TPayload>) => TState)
 	{
 		this._type = (type).toString();
 		this._reducer = reducer;
@@ -163,14 +167,14 @@ const joinReducers = <TState>(
  */
 const is = <TPayload>(
 	action: Action<any>,
-	type: GuardedActionType<TPayload>): action is Action<TPayload> => action.type === type;
+	type: GuardedActionType<TPayload>): action is Action<TPayload> => action.type === type.toString();
 
 /**
  * Create action creator's and action reducer's factory.
  * @param type action's type.
  * @template TPayload action's payload type.
  */
-const createFactory = <TPayload>(type: GuardedActionType<TPayload>) => new GuardedFactory<TPayload>(type);
+const createFactory = <TPayload>(type: string) => new GuardedFactory<TPayload>(new GuardedActionType<TPayload>(type));
 
 export
 {
