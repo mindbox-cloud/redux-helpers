@@ -59,7 +59,7 @@ export class GuardedFactory<TPayload>
 	 */
 	public createReducer<TState>(reducer: (state: TState, action: Action<TPayload>) => TState, initialState?: TState)
 	{
-		const actionReducer = (state: TState = initialState, action: Action<TPayload>) =>
+		const actionReducer = <TPayload>(state: TState = initialState, action: Action<TPayload>) =>
 		{
 			if (is(action, this._type))
 				return reducer(state, action);
@@ -91,12 +91,12 @@ interface GuardedReducerBase<TState>
 
 class GuardedReducer<TPayload, TState> implements GuardedReducerBase<TState>
 {
-	private _reducer: (state: TState, action: Action<TPayload>) => TState;
+	private _reducer: <TPayload>(state: TState, action: Action<TPayload>) => TState;
 	private _type: string;
 
 	constructor(
 		type: GuardedActionType<TPayload>,
-		reducer: (state: TState, action: Action<TPayload>) => TState)
+		reducer: <TPayload>(state: TState, action: Action<TPayload>) => TState)
 	{
 		this._type = (type).toString();
 		this._reducer = reducer;

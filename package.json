@@ -1,6 +1,6 @@
 {
     "name": "@mindbox/redux-helpers",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "description": "Typed factories for your redux reducers and actions.",
     "keywords": [
         "typescript",
@@ -31,7 +31,7 @@
         "karma-typescript": "^2.1.7",
         "source-map-loader": "^0.1.5",
         "ts-loader": "^1.2.0",
-        "typescript": "2.1.6",
+        "typescript": "2.4",
         "webpack": "^1.13.3"
     },
     "dependencies": {
