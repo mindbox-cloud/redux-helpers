@@ -14,18 +14,6 @@ interface Action<TPayload> extends BaseAction
 	error?: boolean;
 }
 
-class GuardedActionType<TPayload> {
-	private _type: string;
-	
-	constructor(type: string) {
-		this._type = type;
-	}
-
-	public toString() {
-		return this._type;
-	}
-}
-
 /**
  * Action creator's and reducer's factory. It contains current store brunch's type and action payload's type.
  * @template TState store's current brunch type.
@@ -33,10 +21,10 @@ class GuardedActionType<TPayload> {
  */
 export class GuardedFactory<TPayload>
 {
-	private _type: GuardedActionType<TPayload>;
+	private _type: string;
 	private _actionCreator: (...args: TPayload[]) => Action<TPayload>;
 
-	constructor(type: GuardedActionType<TPayload>)
+	constructor(type: string)
 	{
 		this._type = type;
 		this._actionCreator = reduxCreateAction<TPayload>(this._type.toString());
@@ -44,7 +32,7 @@ export class GuardedFactory<TPayload>
 
 	public get type()
 	{
-		return this._type.toString();
+		return this._type;
 	}
 
 	/**
@@ -57,13 +45,13 @@ export class GuardedFactory<TPayload>
 	}
 
 	/**
-	 * Creates a reducer, bounded to concrete GuardedActionType.
+	 * Creates a reducer, bounded to concrete type.
 	 * @param reducer reducer.
 	 * @param initialState initialState.
 	 */
 	public createReducer<TState>(reducer: (state: TState, action: Action<TPayload>) => TState, initialState?: TState)
 	{
-		const actionReducer = <TPayload>(state: TState = initialState, action: Action<TPayload>) =>
+		const actionReducer = (state: TState = initialState, action: Action<TPayload>) =>
 		{
 			if (is(action, this._type))
 				return reducer(state, action);
@@ -87,22 +75,22 @@ export class GuardedFactory<TPayload>
 	}
 }
 
-interface GuardedReducerBase<TState>
+interface GuardedReducerBase<TPayload, TState>
 {
 	type: string;
-	reducer: <TPayload>(state: TState, action: Action<TPayload>) => TState;
+	reducer: (state: TState, action: Action<TPayload>) => TState;
 }
 
-class GuardedReducer<TPayload, TState> implements GuardedReducerBase<TState>
+class GuardedReducer<TPayload, TState> implements GuardedReducerBase<TPayload, TState>
 {
-	private _reducer: <TPayload>(state: TState, action: Action<TPayload>) => TState;
+	private _reducer: (state: TState, action: Action<TPayload>) => TState;
 	private _type: string;
 
 	constructor(
-		type: GuardedActionType<TPayload>,
-		reducer: <TPayload>(state: TState, action: Action<TPayload>) => TState)
+		type: string,
+		reducer: (state: TState, action: Action<TPayload>) => TState)
 	{
-		this._type = (type).toString();
+		this._type = type;
 		this._reducer = reducer;
 	}
 
@@ -124,12 +112,12 @@ class GuardedReducer<TPayload, TState> implements GuardedReducerBase<TState>
 * You can register a defaultReducer that will be triggered even if an action
 * was already processed. Please avoid such registrations.
 * @param initialState initial state.
-* @param actionReducers a set of reducers with GuardedActionType.
+* @param actionReducers a set of reducers with type.
 * @param defaultReducer default reducer.
 */
 const joinReducers = <TState>(
 		initialState: TState,
-		actionReducers: GuardedReducerBase<TState>[],
+		actionReducers: GuardedReducerBase<any, TState>[],
 		defaultReducer?: <TAction extends Redux.Action>(state: TState, action: TAction) => TState) =>
 	{
 		const actionReducerMap: Redux.ReducersMapObject = {};
@@ -166,15 +154,15 @@ const joinReducers = <TState>(
  * @template TPayload action's payload type.
  */
 const is = <TPayload>(
-	action: Action<any>,
-	type: GuardedActionType<TPayload>): action is Action<TPayload> => action.type === type.toString();
+	action: Action<TPayload>,
+	type: string): action is Action<TPayload> => action.type === type;
 
 /**
  * Create action creator's and action reducer's factory.
  * @param type action's type.
  * @template TPayload action's payload type.
  */
-const createFactory = <TPayload>(type: string) => new GuardedFactory<TPayload>(new GuardedActionType<TPayload>(type));
+const createFactory = <TPayload>(type: string) => new GuardedFactory<TPayload>(type);
 
 export
 {
