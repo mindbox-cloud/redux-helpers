@@ -8,7 +8,7 @@ export interface BaseAction
 	type: string;
 }
 
-export interface Action<TPayload> extends BaseAction
+interface Action<TPayload> extends BaseAction
 {
 	payload?: TPayload;
 	error?: boolean;
