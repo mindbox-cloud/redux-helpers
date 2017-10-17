@@ -8,7 +8,7 @@ export interface BaseAction
 	type: string;
 }
 
-interface Action<TPayload> extends BaseAction
+export interface Action<TPayload> extends BaseAction
 {
 	payload?: TPayload;
 	error?: boolean;
@@ -115,7 +115,7 @@ class GuardedReducer<TPayload, TState> implements GuardedReducerBase<TPayload, T
 * @param actionReducers a set of reducers with type.
 * @param defaultReducer default reducer.
 */
-const joinReducers = <TState>(
+export const joinReducers = <TState>(
 		initialState: TState,
 		actionReducers: GuardedReducerBase<any, TState>[],
 		defaultReducer?: <TAction extends Redux.Action>(state: TState, action: TAction) => TState) =>
@@ -162,11 +162,4 @@ const is = <TPayload>(
  * @param type action's type.
  * @template TPayload action's payload type.
  */
-const createFactory = <TPayload>(type: string) => new GuardedFactory<TPayload>(type);
-
-export
-{
-	Action,
-	createFactory,
-	joinReducers
-}
+export const createFactory = <TPayload>(type: string) => new GuardedFactory<TPayload>(type);
