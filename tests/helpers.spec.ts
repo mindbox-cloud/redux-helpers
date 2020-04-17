@@ -22,8 +22,8 @@ describe("Redux helpers tests",
 			it("createAction can use empty payload",
 				() =>
 				{
-					const anActionFactory = Helpers.createFactory<string>("ACTION");
-					const anAction = anActionFactory.createAction();
+					const anActionFactory = Helpers.createFactory<string | undefined>("ACTION");
+					const anAction = anActionFactory.createAction(undefined);
 
 					expect(anAction.payload).toBeUndefined();
 				});
@@ -202,7 +202,7 @@ describe("Redux helpers tests",
 						const reducer = actionFactory.createReducer<State | undefined>((state, action) => ({ a: action.payload, b: null }), undefined);
 
 						const defaultActionFactory = Helpers.createFactory<string>("DEFAULT_ACTION");
-						const defaultReducer = (state: State, action: Helpers.Action<string>) => ({ a: state.a, b: action.payload });
+						const defaultReducer = (state: State | undefined, action: Helpers.Action<string>) => ({ a: state!.a, b: action.payload });
 
 						const jointReducer = Helpers.joinReducers(
 							{ a: null, b: null },
@@ -227,33 +227,15 @@ describe("Redux helpers tests",
 						const bReducer = actionFactory.createReducer<State | undefined>(() => ({}), undefined);
 
 
-						expect(() => Helpers.joinReducers<State | undefined>({}, [aReducer, bReducer]))
+						expect(() => Helpers.joinReducers({}, [aReducer, bReducer]))
 							.toThrowError("Reducer with type \"ACTION\" had already been registered.");
-					});
-
-				it("Returns null in case of null current state",
-					() =>
-					{
-						interface State
-						{
-							a: string;
-						}
-
-						const initialState: State = { a: "abacaba" };
-						const jointReducer = Helpers.joinReducers<State | null>(initialState, []);
-
-
-						const actualState = jointReducer(null, { type: "ACTION", payload: undefined });
-
-
-						expect(actualState).toEqual(null);
 					});
 
 				it("Returns initial state in case of undefined current state",
 					() =>
 					{
 						const initialState = "abacaba";
-						const jointReducer = Helpers.joinReducers<string>(initialState, []);
+						const jointReducer = Helpers.joinReducers(initialState, []);
 
 
 						const actualState = jointReducer(undefined, { type: "ACTION", payload: undefined});
@@ -265,7 +247,7 @@ describe("Redux helpers tests",
 				it("JointReducer with initialState === true doesn't change state on unexpected actions",
 					() =>
 					{
-						const jointReducer = Helpers.joinReducers<boolean>(true, []);
+						const jointReducer = Helpers.joinReducers(true, []);
 
 						const currentState = false;
 						const nextState = jointReducer(false, { type: "ACTION", payload: undefined });

@@ -10,7 +10,9 @@
         "strictNullChecks": true,
         "types": [
             "jasmine"
-        ]
+        ],
+        "strictFunctionTypes": true,
+        "strictPropertyInitialization": true,
     },
     "exclude": [
         "node_modules"

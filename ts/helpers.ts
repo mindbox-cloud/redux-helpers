@@ -68,7 +68,7 @@ export class GuardedTypeOnlyFactory
 export class GuardedFactory<TPayload>
 {
 	private _type: string;
-	private _actionCreator: (...args: Array<TPayload | undefined>) => Action<TPayload>;
+	private _actionCreator: (...args: Array<TPayload>) => Action<TPayload>;
 
 	constructor(type: string)
 	{
@@ -91,7 +91,7 @@ export class GuardedFactory<TPayload>
 	 * Creates an action creator.
 	 * @param payload payload for an action. If not passed null will be used as payload.
 	 */
-	public createAction(payload?: TPayload): Action<TPayload>
+	public createAction(payload: TPayload): Action<TPayload>
 	{
 		return this._actionCreator(payload);
 	}
@@ -124,7 +124,7 @@ export class GuardedFactory<TPayload>
 	 */
 	public createPrimitiveReducer<TState extends undefined | TPayload & (Primitive | Array<Primitive>)>(initialState: TState)
 	{
-		return this.createReducer<TPayload>((state, action) => action.payload, initialState!);
+		return this.createReducer<TPayload>((_, action) => action.payload, initialState!);
 	}
 }
 
@@ -168,10 +168,10 @@ class GuardedReducer<TPayload, TState> implements GuardedReducerBase<TPayload, T
 * @param actionReducers a set of reducers with type.
 * @param defaultReducer default reducer.
 */
-export const joinReducers = <TState>(
+export const joinReducers = <TState, TPayload>(
 		initialState: TState,
 		actionReducers: GuardedReducerBase<any, TState>[],
-		defaultReducer?: (state: TState, action: BaseAction) => TState) =>
+		defaultReducer?: (state: TState, action: Action<TPayload>) => TState) =>
 	{
 		const actionReducerMap: Redux.ReducersMapObject = {};
 
@@ -179,7 +179,13 @@ export const joinReducers = <TState>(
 		{
 			if (actionReducerMap[actionReducer.type] != null)
 				throw new Error(`Reducer with type "${actionReducer.type}" had already been registered.`);
-			actionReducerMap[actionReducer.type] = actionReducer.reducer;
+
+			const typeWrapper = (func: (state: TState, action: Action<any>) => TState) => {
+				return (state: TState, action: Redux.AnyAction): TState => {
+					return func(state, action as Action<any>);
+				}
+			}
+			actionReducerMap[actionReducer.type] = typeWrapper(actionReducer.reducer);
 		}
 
 		const reducer = (
