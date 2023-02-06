@@ -15,7 +15,7 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/mindbox-moscow/redux-helpers.git"
+        "url": "git+https://github.com/mindbox-cloud/redux-helpers.git"
     },
     "devDependencies": {
         "@types/jasmine": "^2.5.54",
@@ -39,9 +39,9 @@
         "redux-actions": "^2.0.0"
     },
     "bugs": {
-        "url": "https://github.com/mindbox-moscow/redux-helpers/issues"
+        "url": "https://github.com/mindbox-cloud/redux-helpers/issues"
     },
-    "homepage": "https://github.com/mindbox-moscow/redux-helpers#readme",
+    "homepage": "https://github.com/mindbox-cloud/redux-helpers#readme",
     "directories": {
         "test": "tests"
     }
